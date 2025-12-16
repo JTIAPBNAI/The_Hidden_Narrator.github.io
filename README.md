@@ -22,7 +22,7 @@
 
 ---
 ## การใช้งานในโปรแกรม IDE อย่าง Google Antigravity (สามารถใช้ Microsoft Visual Studio Code ได้เช่นกัน)
- - ดาวโหลดโปรแกรม Google Antigravity ได้ที่ https://antigravity.google/download
+ - ดาวโหลดโปรแกรม [Google Antigravity](https://antigravity.google/download)
  - ทำการติดตั้ง
  - เปิดโปรแกรม และเลือก Open Folder แล้วเลือกไปยัง โฟล์เดอร์โปรเจคที่จะเขียน
  - เมื่อเปิดแล้วจะเห็นรายชื่อโฟล์เดอร์และไฟล์ต่าง ๆ ที่โปรแกรม init_project.sh สร้างให้ในหน้าต่าง Explorer ด้านซ้ายมือ
