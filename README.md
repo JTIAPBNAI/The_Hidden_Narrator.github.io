@@ -4,7 +4,7 @@
 
 ---
 ## การติดตั้งเพื่อเริ่มต้นใช้งาน
- - ให้ทำการ download หรือ copy ไฟล์ ini_project.sh ไปยังโฟล์เดอร์โปรเจคหนังสือที่จะเขียน
+ - ให้ทำการ download หรือ copy ไฟล์ ini_project.sh ไปยังโฟล์เดอร์โปรเจคหนังสือที่จะเขียน - http://thehiddennarrator.whisperingweekends.com/init_project.sh
  - เปิดโปรแกรม terminal (mac) ไปยังไดเรคทอรี่ของโฟล์เดอร์โปรเจคหนังสือนั้น
  - พิมพ์ ./init_project.sh
  - โปรแกรมจะถามชื่อหนังสือที่เราจะเขียน ให้ใส่ชื่อหนังสือที่จะเขียน หรือชื่อโปรเจค - Project Name (folder name) [my-book-project]:ให้พิมพ์ชื่อแล้ว กด enter
