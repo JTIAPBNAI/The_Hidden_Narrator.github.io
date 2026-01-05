@@ -1,0 +1,802 @@
+import os
+import sys
+import json
+import shutil
+
+# ==========================================
+# 🚀 AI GHOST WRITING PROJECT SETUP SCRIPT (Python Version)
+# Based on DOE Framework
+# ==========================================
+
+def get_input(prompt, default):
+    user_input = input(f"{prompt} [{default}]: ").strip()
+    return user_input if user_input else default
+
+def create_file(path, content):
+    # Ensure directory exists
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content.strip() + "\n")
+    print(f"✅ Created: {path}")
+
+def make_executable(path):
+    # On Windows this is ignored, on Unix it sets +x
+    if os.name != 'nt':
+        import stat
+        st = os.stat(path)
+        os.chmod(path, st.st_mode | stat.S_IEXEC)
+
+def main():
+    print("---------------------------------------------------------")
+    print("🤖 AI Agentic Workflow Generator (DOE Framework)")
+    print("---------------------------------------------------------")
+
+    # 1. INTERACTIVE INPUTS
+    print("\n📋 PROJECT CONFIGURATION")
+    print("---------------------------------------------------------")
+    
+    project_name = get_input("📁 Project Name (folder name)", "my-book-project")
+    book_goal = get_input("🎯 Book Goal", "Write a book that empowers ordinary people to become authors using AI")
+    agent_role = get_input("🎭 AI Role", "Ghost Writer & System Architect")
+    agent_persona = get_input("🧠 Persona", "Adam Grant (Psychology) x Paul Krugman (Economics) x Naval Ravikant (Systems Thinking)")
+    agent_tone = get_input("🗣 Tone & Voice", "Humble Authority - Tech-Savvy Intellectual")
+    primary_lang = get_input("🌐 Primary Language", "Thai (ภาษาไทย)")
+    create_structure = get_input("📚 Create sample chapter structure? (y/n)", "y").lower() == 'y'
+
+    # 2. SCAFFOLDING DIRECTORIES
+    print(f"\n🚀 Initializing project: {project_name}...")
+    base_dir = project_name
+    dirs = [
+        ".tmp",
+        "directives",
+        "drafts",
+        "execution",
+        "TopBun",
+        "resources"
+    ]
+    
+    for d in dirs:
+        os.makedirs(os.path.join(base_dir, d), exist_ok=True)
+
+    # Config Files
+    create_file(os.path.join(base_dir, ".env"), "")
+    create_file(os.path.join(base_dir, ".gitignore"), """
+.env
+.tmp/
+__pycache__/
+*.DS_Store
+venv/
+node_modules/
+*.pyc
+.pytest_cache/
+""")
+
+    # 3. GENERATE GEMINI.md
+    gemini_content = """
+# Agent Instructions
+
+> This file defines the operating system for the AI agent using the DOE Framework.
+
+You operate within a **3-layer architecture** that separates concerns to maximize reliability:
+
+## The 3-Layer Architecture (DOE Framework)
+
+**Layer 1: Directive (What to do)**
+- SOPs written in Markdown, live in `directives/`
+- Define goals, inputs, tools/scripts to use, outputs, and edge cases
+- Natural language instructions for the AI agent
+
+**Layer 2: Orchestration (Decision making)**
+- This is you (the AI). Your job: intelligent routing.
+- Read directives, call execution tools in the right order, handle errors, ask for clarification
+- Update directives with learnings (self-annealing)
+- You're the glue between intent and execution
+
+**Layer 3: Execution (Doing the work)**
+- Deterministic Python scripts in `execution/`
+- Handle API calls, data processing, file operations
+- Reliable, testable, fast
+
+## Operating Principles
+
+**1. Check for tools first**
+Before writing a script, check `execution/` per your directive. Only create new scripts if none exist.
+
+**2. Self-anneal when things break**
+- Read error message and stack trace
+- Fix the script and test it again
+- Update the directive with what you learned (API limits, timing, edge cases)
+- Example: API rate limit → find batch endpoint → rewrite script → test → update directive
+
+**3. Update directives as you learn**
+Directives are living documents. When you discover:
+- API constraints
+- Better approaches
+- Common errors
+- Timing expectations
+→ Update the directive immediately.
+
+**4. File Hygiene**
+- **Deliverables**: Final outputs (drafts, reports) go to `drafts/` or cloud services
+- **Intermediates**: Temporary processing files go to `.tmp/` (never commit)
+- **Source of Truth**: `TopBun/` contains user's original context (read-only)
+- **Directives**: `directives/` contains SOPs (update via self-annealing)
+
+## Self-Annealing Loop
+When something breaks:
+1. Fix it
+2. Update the tool
+3. Test the tool
+4. Update directive to include new flow
+5. System is now stronger
+
+## Summary
+You sit between human intent (directives) and deterministic execution (Python scripts). 
+Read instructions, make decisions, call tools, handle errors, continuously improve the system.
+
+Be pragmatic. Be reliable. Self-anneal.
+"""
+    create_file(os.path.join(base_dir, "GEMINI.md"), gemini_content)
+
+    # 4. GENERATE DIRECTIVES
+    print("📚 Generating Directives...")
+
+    # 00_persona_and_tone.md
+    create_file(os.path.join(base_dir, "directives", "00_persona_and_tone.md"), f"""
+# DIRECTIVE: Persona, Role, and Tone Definition
+
+## 1. Role Definition: {agent_role}
+**Concept:** You are acting as a **{agent_role}**. You are not just a generic AI; you are a specialized partner in this domain.
+
+### The Persona Profile
+**Core Identity:** {agent_persona}
+
+**Why this persona?**
+- Combine multiple perspectives to create a unique voice
+- Balance analytical depth with accessible storytelling
+- Maintain credibility through evidence-based reasoning
+
+---
+
+## 2. Voice & Tone
+**Style:** {agent_tone}
+**Primary Language:** {primary_lang}
+
+### Writing Rules
+1.  **Identity Consistency:** Always stay in character as described above.
+2.  **Language Adaptation:** Match vocabulary and structure to the target language and tone.
+3.  **Vulnerability:** If unsure, admit it. Do not hallucinate.
+4.  **Information Density:** Focus on high insight-per-paragraph ratio.
+5.  **Evidence-Based:** Support claims with research, data, or expert opinions.
+
+### Tone Guidelines
+- **Humble Authority:** Knowledgeable but approachable
+- **Solution-Oriented:** Don't just identify problems; propose frameworks
+- **Futuristic yet Grounded:** Forward-thinking but practical
+
+---
+
+## 3. Narrative Themes
+Core themes to maintain throughout the work:
+- **Empowerment:** Technology democratizes expertise
+- **Collaboration:** AI as partner, not replacement
+- **Systems Thinking:** View complex tasks as engineerable processes
+- **Continuous Learning:** Embrace iteration and improvement
+
+---
+
+## 4. Example Prompt
+> "Act as **{agent_role}**. Channel the persona of **{agent_persona}**.
+> 
+> **Task:** [Specific task]
+> **Context:** [Relevant background]
+> **Tone:** {agent_tone}
+> 
+> Ensure the output is evidence-based and maintains the established voice."
+""")
+
+    # 01_write_chapter.md
+    create_file(os.path.join(base_dir, "directives", "01_write_chapter.md"), """
+# DIRECTIVE: Write Chapter (Sandwich Method)
+
+**Role:** Ghost Writer & Director Partner
+**Reference:** Must follow `directives/00_persona_and_tone.md` for voice and style.
+**Goal:** Draft a chapter section using the Sandwich Workflow.
+
+## The Sandwich Method
+
+### Step 0: Contextual Bridge (The Link)
+- **Input:** Read the summary/conclusion of the PREVIOUS chapter (if available).
+- **Action:** Reference key terms or concepts from the previous chapter in the opening.
+- **Goal:** Create seamless narrative flow.
+
+### Step 1: Human Context (Top Bun)
+- **Input:** User provides bullet points, anecdotes, or the "Big Idea".
+- **Director's Action:**
+  - Define the specific intellectual angle
+  - Specify the context (economic, social, psychological)
+  - Outline the key message
+
+### Step 2: AI Generation (Meat)
+- **Action:** AI expands bullet points into full prose.
+- **Guidelines:**
+  - **Persona Check:** Adopt the defined persona consistently
+  - **Narrative Flow:** Write smoothly, integrate concepts naturally
+  - **Structure:** Use clear logical flow (Premise → Evidence → Conclusion)
+  - **Chain of Density:** Start with core idea, layer in details progressively
+  
+  - **Citation Format:**
+    - Avoid inline citations unless necessary for the story
+    - Create a "References / Key Sources" section at the bottom
+    - List theories, papers, or articles used for later verification
+
+### Step 3: Human Refinement (Bottom Bun)
+- **Input:** The AI draft.
+- **Director's Action:**
+  - **Fact-Check:** Verify references against real data
+  - **Humanize:** Inject vulnerability, personal insights
+  - **Tone Check:** Ensure humble authority, avoid arrogance
+  - **Bridge:** Ensure smooth transition to next section
+
+---
+
+## Rules of Engagement
+- **Input Integrity:** NEVER overwrite source files in `TopBun/` or `directives/`. These are read-only.
+- **Output Location:** ALWAYS create new files in `drafts/` directory (e.g., `drafts/chapter_01_v1.md`).
+- **Versioning:** Use version numbers for iterations (v1, v2, v3).
+
+**Output:** A NEW Markdown file saved in `drafts/`.
+""")
+
+    # 02_refine_voice.md
+    create_file(os.path.join(base_dir, "directives", "02_refine_voice.md"), f"""
+# DIRECTIVE: Refine Voice & Localization
+
+**Goal:** Polish the draft to match the defined persona and tone in the target language.
+**Reference:** `directives/00_persona_and_tone.md`
+
+## Checklist for Review
+
+### 1. Tone & Personality
+- [ ] **Humble Authority:**
+    - Sound knowledgeable but approachable
+    - Avoid preaching or commanding language
+    - Use observational or sharing language
+- [ ] **Vulnerability & Relatability:**
+    - Admit struggles or uncertainties
+    - Position author as learner alongside reader
+- [ ] **Appropriate Metaphors:**
+    - Use metaphors that align with the persona
+    - Ensure consistency across chapters
+
+### 2. Language Localization ({primary_lang})
+- [ ] **Pronouns & Formality:**
+    - Choose appropriate pronouns for the target language
+    - Maintain consistent formality level
+- [ ] **Technical Terms:**
+    - Decide when to transliterate vs. translate
+    - Explain complex terms on first mention
+    - Use parenthetical English terms if helpful
+- [ ] **Sentence Structure:**
+    - Adapt to natural patterns of target language
+    - Break long sentences into digestible chunks
+    - Read aloud test: does it sound natural?
+
+### 3. Narrative & Content Style
+- [ ] **Metaphor Consistency:**
+    - Maintain thematic coherence across chapters
+    - Avoid jarring shifts in imagery
+- [ ] **Storytelling over Textbook:**
+    - Start sections with hooks, questions, or stories
+    - Explain complex ideas simply without dumbing down
+- [ ] **Attribution:**
+    - Always credit theories to their originators
+    - Use proper citation format
+
+### 4. Vocabulary Guidelines
+- [ ] **Avoid Over-Colloquialism:**
+    - Professional but not stuffy
+    - Accessible but not casual
+- [ ] **Avoid Academic Stiffness:**
+    - Conversational where appropriate
+    - Clear and direct language
+""")
+
+    # 03_master_plan.md
+    create_file(os.path.join(base_dir, "directives", "03_master_plan.md"), f"""
+# Master Plan: {project_name}
+
+## Goal
+{book_goal}
+
+## Book Structure
+[Define your chapter outline here]
+
+### Suggested Template:
+- Introduction: [Hook and overview]
+- Chapter 1: [First major topic]
+- Chapter 2: [Second major topic]
+- Chapter 3: [Third major topic]
+- ...
+- Conclusion: [Synthesis and future outlook]
+- References
+
+## Target Audience
+[Define who this book is for]
+
+## Key Differentiators
+[What makes this book unique?]
+
+## Success Metrics
+[How will you measure if this book achieves its goal?]
+""")
+
+    # 04_research_protocol.md
+    create_file(os.path.join(base_dir, "directives", "04_research_protocol.md"), """
+# DIRECTIVE: Research Protocol
+
+**Goal:** Provide empirical evidence to support the work.
+**Tool:** `execution/research_tool.py`
+
+## When to Use Research
+- Verifying statistical claims
+- Finding supporting evidence for assertions
+- Discovering recent developments in a field
+- Locating expert opinions or studies
+
+## Research Modes
+
+### General Mode
+- Broad web search
+- News articles, blogs, general sources
+- Quick fact-checking
+
+### Academic Mode
+- Scholarly papers and journals
+- .edu, .gov, arxiv.org, scholar.google.com
+- In-depth research for credibility
+
+## Usage
+```bash
+# General research
+python execution/research_tool.py "query"
+
+# Academic research
+python execution/research_tool.py "query" --academic
+```
+
+## Output
+- Results saved to `.tmp/research_results.json`
+- Review and cite relevant sources in your draft
+- Add to References section
+""")
+
+    # 05_autonomous_research.md
+    create_file(os.path.join(base_dir, "directives", "05_autonomous_research.md"), """
+# DIRECTIVE: Autonomous Fact-Checking & Enrichment
+
+**Goal:** Reduce user workload by having AI autonomously verify its own drafts.
+**Trigger:** Use AFTER generating a draft (V1) but BEFORE showing it to user as final.
+
+## Phase 1: Claim Extraction (The Skeptic)
+**Role:** Act as a critical editor.
+**Action:** Scan the generated draft and identify:
+1.  **Statistical Claims:** Numbers, dates, percentages
+2.  **Citations:** Specific people, books, theories
+3.  **Strong Assertions:** Causal claims ("X causes Y")
+
+**Output:** List of claims to verify.
+
+## Phase 2: Autonomous Research (The Researcher)
+**Action:** Generate terminal commands to verify claims using `research_tool.py`.
+**Format:**
+```bash
+python execution/research_tool.py "query for claim 1" --academic
+python execution/research_tool.py "query for claim 2"
+```
+
+## Phase 3: Verification & Update (The Editor)
+**Action:** 
+1. Review research results from `.tmp/research_results.json`
+2. Confirm or correct claims in the draft
+3. Add verified sources to References section
+4. Flag any claims that couldn't be verified for user review
+
+**Output:** Updated draft with verified claims and proper citations.
+""")
+
+    # 06_editor_critic.md
+    create_file(os.path.join(base_dir, "directives", "06_editor_critic.md"), """
+# DIRECTIVE: The Editor & Critic (Quality Assurance)
+
+**Role:** Chief Editor & Narrative Guardian
+**Goal:** Ensure the chapter flows logically, maintains persona, and connects seamlessly with the rest of the book.
+
+## 1. Narrative Continuity Check (The Thread)
+* **Callback:** Does this chapter reference concepts from previous chapters?
+* **Consistency:** Are metaphors and themes consistent throughout?
+* **Progression:** Does the narrative build logically toward the book's goal?
+
+## 2. Persona Alignment Check (The Voice)
+* **Reference:** `@directives/00_persona_and_tone.md`
+* **Tone Check:**
+    - Is it too technical? Simplify or add analogies.
+    - Is it too dry? Inject storytelling elements.
+    - Is it too assertive? Maintain humble authority.
+* **Authority Check:**
+    - Are cited experts consistent with the book's authority pillars?
+    - If introducing new fields, explain why it matters.
+
+## 3. Structural Logic (The Flow)
+* **The Bridge:** Check transitions between sections.
+* **The Sandwich Consistency:** Ensure workflow matches `@directives/01_write_chapter.md`.
+* **Pacing:** Vary sentence length and paragraph structure for readability.
+
+## 4. Actionable Feedback
+If the draft fails any check:
+1.  **Identify:** Pinpoint the specific paragraph or section.
+2.  **Suggest:** Provide specific rewrite direction.
+3.  **Explain:** Clarify why the change improves the work.
+
+**Output:** Detailed feedback document or revised draft.
+""")
+
+    # 07_illustration_style.md
+    create_file(os.path.join(base_dir, "directives", "07_illustration_style.md"), """
+# DIRECTIVE: Illustration & Visual Style
+**Filename:** `directives/07_illustration_style.md`
+
+## 1. Core Aesthetic: "Clean Modern Infographic"
+**Concept:** High-clarity vector diagrams with a focus on symmetry, structure, and instructional flow.
+**Visual Reference:** The "Infographic" style approved by the user. Matches "NotebookLM" slide aesthetics but cleaner.
+
+### 1.1 Visual Elements
+*   **Background:** Solid Vector Beige/Cream (Hex: #F5F5F0). Minimal texture, clean look.
+*   **Line Work:** Consistent, thin, dark vector lines (Charcoal).
+*   **Color Palette:**
+    *   **Primary:** Cream/Beige Background.
+    *   **Accents:** Sage Green (Efficiency/Correctness), Terracotta (Chaos/Struggle), Muted Teal (Tech).
+    *   **Contrast:** Solid flat colors, no messy sketching unless representing "The Author's Struggle".
+*   **Layout:** **Flexible & Context-Dependent**.
+    *   *Rule:* Do NOT force split-screen. Use the layout that best fits the concept (e.g., Process Flow, Hierarchical Pyramid, Bar Graph, Network Map).
+    *   *Split-screen* is only for direct comparisons.
+*   **Density:** **3-5 Images per Chapter** (Minimum).
+    *   *Goal:* Break up text walls and visualize abstract concepts frequently.
+
+## 2. Text & Language Rules
+*   **Visual Text:** **Thai Script (TH)** (Required for all labels).
+    *   *Constraint:* Ensure the Thai font is legible and clean. Use formal but accessible language.
+    *   *English Terms:* Use English only for specific technical terms (e.g., "Imposter Syndrome") that are better left untranslated, or use dual language if necessary.
+*   **Captions:** Continue to use **Thai Captions** in the Markdown file for accessibility and context.
+
+## 3. Prompt Structure & Examples
+*Use these examples as a template for tone and detail.*
+
+### Example 1: Abstract Concept (The Crystallization)
+*   **Prompt:** Infographic diagram. Top: Cloud of tangled lines labeled 'ความวุ่นวาย' (Chaos). Middle: Funnel mechanism labeled 'ตัวกรอง' (Filter). Bottom: Organized blocks labeled 'ความชัดเจน' (Clarity). Cream background. Sage and Terracotta accents.
+*   **Text:** Thai Script Labels.
+
+### Example 2: Comparison (Author vs Director)
+*   **Prompt:** Split screen infographic. Left: 'ผู้ประพันธ์' (The Author), icon of person + clock. Right: 'ผู้กำกับ' (The Director), icon of person + network.
+*   **Text:** Thai Script Labels.
+
+## 4. File Management
+*   **Location:** `assets/images/chapter_XX/` (e.g., `chapter_01`, `chapter_02`).
+*   **Naming Convention:** `snake_case_concept_name.png` (e.g., `three_leverages.png`).
+*   **Production Queue:** All pending execution prompts are stored in `resources/pending_image_prompts.md`. Check this file for the active to-do list.
+""")
+
+    # 08_self_annealing.md
+    create_file(os.path.join(base_dir, "directives", "08_self_annealing.md"), """
+# DIRECTIVE: Self-Annealing System (ระบบการเรียนรู้และปรับปรุงตัวเอง)
+**Filename:** `directives/08_self_annealing.md`
+
+## 1. Core Concept (แนวคิดหลัก)
+**"The System that Improves Itself"**
+เป้าหมายสูงสุดของการเขียนหนังสือด้วย AI Ghost Writing Machine คือการสร้างระบบที่ไม่เพียงแค่ "ผลิต" งานเขียน แต่ต้องสามารถ "เรียนรู้" จากข้อผิดพลาด (Bugs/Errors) และ "ปรับปรุง" (Optimize) กระบวนการทำงานของตัวเองให้ดีขึ้นเรื่อยๆ ในทุกๆ รอบการทำงาน (Iteration)
+
+นี่คือการนำหลักการ **Self-Annealing** (การหลอมรวมและจัดเรียงตัวใหม่เพื่อลดความไม่สมบูรณ์) มาใช้กับการทำงานร่วมกันระหว่าง Human Director และ AI Agent
+
+## 2. Trigger Strategy (เมื่อไหร่ต้องใช้ Directive นี้?)
+ให้เริ่มกระบวนการ Self-Annealing ทันทีเมื่อเกิดเหตุการณ์ต่อไปนี้:
+1.  **Manual Rework Spike:** เมื่อ Human Director ต้องเข้ามาแก้เนื้อหาใน Draft เดิมซ้ำๆ หรือแก้เป็นจำนวนมาก (แสดงว่า Directive เดิมไม่ละเอียดพอ)
+2.  **Recurring Criticism:** เมื่อได้รับ Feedback เดิมซ้ำๆ (เช่น "โทนยังทางการเกินไป", "ยังขาดการยกตัวอย่าง") เกิน 2 ครั้ง
+3.  **Process Failure:** เมื่อทำตาม SOP เดิมแล้วได้ผลลัพธ์ที่ไม่ตรงตามเป้าหมาย หรือติดขัดจนไปต่อไม่ได้
+
+## 3. The Self-Annealing Workflow (ขั้นตอนการปฏิบัติ)
+ให้ AI ปฏิบัติตาม 3 ขั้นตอนนี้อย่างเคร่งครัดเมื่อได้รับคำสั่ง "Task: Self-Anneal":
+
+### Step 1: Analyze (วิเคราะห์สาเหตุ)
+วิเคราะห์หาสาเหตุที่แท้จริง (Root Cause Analysis) ว่าทำไม SOP/Directives เดิมถึงทำให้เกิดปัญหา:
+*   **Gap Identification:** กฎข้อไหนใน `directives/` ที่ "หายไป" (Missing)?
+*   **Ambiguity:** กฎข้อไหนที่ "คลุมเครือ" จนทำให้ AI ตีความผิด?
+*   **Conflict:** มีกฎข้อไหนที่ "ขัดแย้ง" กันเองหรือไม่?
+
+### Step 2: Propose Directive Update (เสนอการแก้ไข SOP)
+ห้ามแก้แค่ที่ปลายเหตุ (แก้แค่ Text ในบทนั้น) แต่ต้องเสนอการแก้ที่ต้นเหตุ (Directive) เพื่อป้องกันไม่ให้เกิดปัญหาเดิมในบทถัดไป:
+*   ระบุชื่อไฟล์ Directive ที่ต้องการแก้ไข (เช่น `01_write_chapter.md`, `02_refine_voice.md`)
+*   ระบุเนื้อหาที่ต้องการเพิ่ม (Add), ลบ (Exclude), หรือปรับเปลี่ยน (Modify)
+*   **Example:** "เพิ่มกฎใน `02_refine_voice.md` ว่า *'ต้องมี Metaphor เปรียบเทียบกับ Software Engineering อย่างน้อย 1 ครั้งในทุก Section'* เพื่อแก้ปัญหาเนื้อหาดูแห้งแล้งเกินไป"
+
+### Step 3: Execute Optimization (ดำเนินการปรับปรุงระบบ)
+เมื่อ Human Director อนุมัติแผนการแก้ไข:
+1.  ทำการแก้ไขไฟล์ Directive นั้นจริงๆ (`write_to_file` / `replace_file_content`)
+2.  บันทึกสิ่งที่เรียนรู้ใหม่ลงใน `task.md` หรือ Log เพื่อเป็นหลักฐานว่าระบบได้ "ฉลาดขึ้น" แล้ว (Version Up)
+
+## 4. Maintenance (การดูแลรักษาระบบ)
+*   อย่ากลัวที่จะลบกฎเก่าที่ล้าสมัย (Deprecation)
+*   ทำให้ Directive สั้น กระชับ และ High-impact เสมอ (Lean Principle)
+""")
+
+    # 5. GENERATE EXECUTION TOOLS
+    print("🛠 Creating Execution Tools...")
+
+    # research_tool.py
+    create_file(os.path.join(base_dir, "execution", "research_tool.py"), """
+#!/usr/bin/env python3
+\"\"\"
+Research Tool for AI Ghost Writing
+Supports general and academic search modes
+\"\"\"
+
+import argparse
+import json
+from duckduckgo_search import DDGS
+
+def search(query, mode="general", max_results=5):
+    \"\"\"
+    Search tool with specific modes for General vs. Academic context.
+    
+    Args:
+        query: Search keywords
+        mode: "general" or "academic"
+        max_results: Maximum number of results to return
+    \"\"\"
+    print(f"🔎 Mode: [{mode.upper()}] Searching for: {query}...")
+    
+    # Query Engineering: Adjust query based on mode
+    final_query = query
+    if mode == "academic":
+        # Force search only in academic sources
+        academic_sites = (
+            "site:arxiv.org OR site:nber.org OR site:scholar.google.com "
+            "OR site:researchgate.net OR site:edu OR site:gov"
+        )
+        final_query = f"{query} ({academic_sites})"
+    
+    results = []
+    try:
+        with DDGS() as ddgs:
+            ddgs_gen = ddgs.text(final_query, max_results=max_results)
+            for r in ddgs_gen:
+                results.append(r)
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        return []
+
+    # Save outputs (Layer 3 principle: Local files for processing)
+    output_file = ".tmp/research_results.json"
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(results, f, ensure_ascii=False, indent=2)
+    
+    print(f"✅ Found {len(results)} results. Saved to {output_file}")
+    
+    # Display results summary in terminal
+    for i, res in enumerate(results):
+        print(f"[{i+1}] {res.get('title')} ({res.get('href')})")
+    
+    return results
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="AI Ghost Writer Research Tool")
+    parser.add_argument("query", type=str, help="Search keywords")
+    parser.add_argument("--academic", action="store_true", help="Enable academic paper search mode")
+    parser.add_argument("--max-results", type=int, default=5, help="Maximum number of results")
+    
+    args = parser.parse_args()
+    
+    search_mode = "academic" if args.academic else "general"
+    search(args.query, mode=search_mode, max_results=args.max_results)
+""")
+    make_executable(os.path.join(base_dir, "execution", "research_tool.py"))
+
+    # 6. CREATE TOPBUN STRUCTURE
+    if create_structure:
+        print("📄 Creating sample chapter structure...")
+        create_file(os.path.join(base_dir, "TopBun", "00_master_outline.md"), f"""
+# Master Outline: {project_name}
+
+## Book Goal
+{book_goal}
+
+## Chapter Structure
+
+### Introduction
+- Hook: [Compelling opening]
+- Problem: [What problem does this book solve?]
+- Promise: [What will readers gain?]
+
+### Chapter 1: [Title]
+**Big Idea:** [Core concept]
+**Key Points:**
+- Point 1
+- Point 2
+- Point 3
+
+### Chapter 2: [Title]
+**Big Idea:** [Core concept]
+**Key Points:**
+- Point 1
+- Point 2
+- Point 3
+
+### Conclusion
+- Summary of key insights
+- Call to action
+- Future outlook
+
+## References
+[List key sources to research]
+""")
+        create_file(os.path.join(base_dir, "TopBun", "chapter_01_notes.md"), "")
+        create_file(os.path.join(base_dir, "TopBun", "chapter_02_notes.md"), "")
+        
+        create_file(os.path.join(base_dir, "resources", "README.md"), """
+# Resources & References
+
+Store reference materials, research papers, and inspiration here.
+""")
+
+    # 7. CREATE TASK.MD
+    create_file(os.path.join(base_dir, "task.md"), f"""
+# Task Tracker: {project_name}
+
+## Current Phase: Setup Complete ✅
+
+## Checklist
+
+### Phase 1: Planning
+- [x] Initialize project structure
+- [ ] Define book outline in `TopBun/00_master_outline.md`
+- [ ] Research key topics and gather references
+- [ ] Finalize persona and tone in `directives/00_persona_and_tone.md`
+
+### Phase 2: Drafting
+- [ ] Chapter 1: First draft
+- [ ] Chapter 2: First draft
+- [ ] Chapter 3: First draft
+- [ ] ...
+
+### Phase 3: Refinement
+- [ ] Review all chapters for narrative continuity
+- [ ] Fact-check claims and verify references
+- [ ] Polish voice and tone consistency
+- [ ] Final editorial pass
+
+### Phase 4: Completion
+- [ ] Compile references
+- [ ] Format for publication
+- [ ] Final review
+
+## Notes
+[Add notes, blockers, or insights here]
+""")
+
+    # 8. GENERATE START PROMPT
+    create_file(os.path.join(base_dir, "Startprompt.md"), f"""
+**Role:** {agent_role}
+**Reference:** @directives/00_persona_and_tone.md
+**Context:** Working on Project: **{project_name}**
+
+**Book Goal:** {book_goal}
+
+**Objective:** Execute the next task based on the context in @TopBun/ and @directives/.
+
+**Instructions:**
+1.  **Analyze:** Read the input files in TopBun/ to understand the current context.
+2.  **Research:** If needed, run `python execution/research_tool.py "query" --academic`.
+3.  **Execute:** Draft content following the persona: **{agent_persona}**.
+4.  **Review:** Ensure the tone is **{agent_tone}** and language is **{primary_lang}**.
+5.  **Self-Anneal:** If you encounter issues, update the relevant directive.
+
+**Current Task:** [Specify the next chapter or section to work on]
+
+Ready to start. Please specify the target file or topic.
+""")
+
+    # 9. CREATE README
+    create_file(os.path.join(base_dir, "README.md"), f"""
+# {project_name}
+
+{book_goal}
+
+## Project Structure
+
+```
+{project_name}/
+├── .tmp/                    # Temporary files (not committed)
+├── directives/              # SOPs and workflow instructions
+│   ├── 00_persona_and_tone.md
+│   ├── 01_write_chapter.md
+│   ├── 02_refine_voice.md
+│   ├── 03_master_plan.md
+│   ├── 04_research_protocol.md
+│   ├── 05_autonomous_research.md
+│   ├── 06_editor_critic.md
+│   ├── 07_illustration_style.md
+│   └── 08_self_annealing.md
+├── drafts/                  # AI-generated drafts
+├── execution/               # Python tools and scripts
+│   └── research_tool.py
+├── TopBun/                  # User's original context (read-only)
+├── resources/               # Reference materials
+├── GEMINI.md               # AI agent operating system
+├── task.md                 # Mission control checklist
+└── Startprompt.md          # Initial prompt for AI
+```
+
+## How to Use
+
+### 1. Define Your Book
+Edit `TopBun/00_master_outline.md` with your chapter structure and key ideas.
+
+### 2. Start Writing
+Copy the content from `Startprompt.md` and paste it into your AI chat (Gemini, Claude, etc.).
+
+### 3. Iterate
+- AI drafts chapters in `drafts/`
+- You refine in the "Bottom Bun" phase
+- Update directives as you learn
+
+### 4. Research
+```bash
+# General search
+python execution/research_tool.py "your query"
+
+# Academic search
+python execution/research_tool.py "your query" --academic
+```
+
+## The DOE Framework
+
+**Directive:** Instructions in `directives/`
+**Orchestration:** AI decision-making and routing
+**Execution:** Deterministic tools in `execution/`
+
+## Persona
+**Role:** {agent_role}
+**Voice:** {agent_persona}
+**Tone:** {agent_tone}
+**Language:** {primary_lang}
+
+---
+
+Generated by AI Ghost Writing Project Setup Script (Python Version)
+""")
+
+    # 10. FINAL OUTPUT
+    print("")
+    print("✅ PROJECT SETUP COMPLETE!")
+    print("---------------------------------------------------------")
+    print(f"📁 Project created at: {os.path.abspath(base_dir)}")
+    print(f"🎯 Goal: {book_goal}")
+    print(f"🎭 Role: {agent_role}")
+    print(f"🗣 Tone: {agent_tone}")
+    print(f"🌐 Language: {primary_lang}")
+    print("---------------------------------------------------------")
+    print("")
+    print("📋 Next Steps:")
+    print("1. Review and customize directives in 'directives/'")
+    print("2. Define your book outline in 'TopBun/00_master_outline.md'")
+    print("3. Open 'Startprompt.md' and copy it to your AI chat")
+    print("4. Start writing!")
+    print("")
+    print("🔧 Tools Available:")
+    print("- Research: python execution/research_tool.py 'query' --academic")
+    print("- Track Progress: task.md")
+    print("- Reference: GEMINI.md for DOE Framework")
+    print("")
+    print("Happy Writing! 📚✨")
+
+if __name__ == "__main__":
+    main()
