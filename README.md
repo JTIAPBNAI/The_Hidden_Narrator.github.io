@@ -4,9 +4,11 @@
 
 ---
 ## การติดตั้งเพื่อเริ่มต้นใช้งาน
- - ให้ทำการ download หรือ copy ไฟล์ ini_project.sh ไปยังโฟล์เดอร์โปรเจคหนังสือที่จะเขียน - [Link](https://github.com/JTIAPBNAI/The_Hidden_Narrator.github.io/blob/main/init_project.sh)
- - เปิดโปรแกรม terminal (mac) ไปยังไดเรคทอรี่ของโฟล์เดอร์โปรเจคหนังสือนั้น
- - พิมพ์ ./init_project.sh
+ - ให้ทำการ download หรือ copy ไฟล์ ini_project.sh (mac)ไปยังโฟล์เดอร์โปรเจคหนังสือที่จะเขียน - [Link สำหรับผู้ใช้ mac](https://github.com/JTIAPBNAI/The_Hidden_Narrator.github.io/blob/main/init_project.sh)
+ - ให้ทำการ download หรือ copy ไฟล์ init_project.bat และ init_project.py (windows)ไปยังโฟล์เดอร์โปรเจคหนังสือที่จะเขียน - [Link1 สำหรับผู้ใช้ windows](https://github.com/JTIAPBNAI/The_Hidden_Narrator.github.io/blob/main/init_project.bat) และ [Link2 สำหรับผู้ใช้ windows](https://github.com/JTIAPBNAI/The_Hidden_Narrator.github.io/blob/main/init_project.py)
+ - เปิดโปรแกรม terminal (mac) หรือ command line (windows) ไปยังไดเรคทอรี่ของโฟล์เดอร์โปรเจคหนังสือนั้น
+ - พิมพ์ ./init_project.sh (สำหรับ mac)
+ - พิมพ์ init_project.bat (สำหรับ windows)
  - โปรแกรมจะถามชื่อหนังสือที่เราจะเขียน ให้ใส่ชื่อหนังสือที่จะเขียน หรือชื่อโปรเจค - Project Name (folder name) [my-book-project]:ให้พิมพ์ชื่อแล้ว กด enter
  - โปรแกรมจะถามเป้าหมาย หรือ บอกว่าหนังสือที่จะเขียนเกี่ยวกับอะไร - Book Goal (What is this book about?) [Write a book that empowers ordinary people to become authors using AI]: ตรงนี้ถ้าเรามีแนวทางหรือ concept หลักของหนังสือ สามารถพิมพ์ใส่ได้เลย แล้ว กด enter
  - โปรแกรมจะถามบทบาทที่จะให้ AI เป็น AI Role - (e.g., Ghost Writer, Research Assistant) [Ghost Writer & System Architect]: อยากจะให้ AI สวมบทบาทไหน สามารถพิมพ์ได้ หรือ กด enter เพื่อใช้ค่าเริ่มต้น
