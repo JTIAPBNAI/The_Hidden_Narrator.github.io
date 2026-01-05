@@ -138,7 +138,7 @@ Be pragmatic. Be reliable. Self-anneal.
 EOF
 
 # ==========================================
-# 4. GENERATE DIRECTIVES (7 Core Files)
+# 4. GENERATE DIRECTIVES (9 Core Files)
 # ==========================================
 echo "📚 Generating Directives..."
 
@@ -442,6 +442,95 @@ If the draft fails any check:
 **Output:** Detailed feedback document or revised draft.
 EOF
 
+
+
+# 07_illustration_style.md
+cat <<'EOF' > directives/07_illustration_style.md
+# DIRECTIVE: Illustration & Visual Style
+**Filename:** `directives/07_illustration_style.md`
+
+## 1. Core Aesthetic: "Clean Modern Infographic"
+**Concept:** High-clarity vector diagrams with a focus on symmetry, structure, and instructional flow.
+**Visual Reference:** The "Infographic" style approved by the user. Matches "NotebookLM" slide aesthetics but cleaner.
+
+### 1.1 Visual Elements
+*   **Background:** Solid Vector Beige/Cream (Hex: #F5F5F0). Minimal texture, clean look.
+*   **Line Work:** Consistent, thin, dark vector lines (Charcoal).
+*   **Color Palette:**
+    *   **Primary:** Cream/Beige Background.
+    *   **Accents:** Sage Green (Efficiency/Correctness), Terracotta (Chaos/Struggle), Muted Teal (Tech).
+    *   **Contrast:** Solid flat colors, no messy sketching unless representing "The Author's Struggle".
+*   **Layout:** **Flexible & Context-Dependent**.
+    *   *Rule:* Do NOT force split-screen. Use the layout that best fits the concept (e.g., Process Flow, Hierarchical Pyramid, Bar Graph, Network Map).
+    *   *Split-screen* is only for direct comparisons.
+*   **Density:** **3-5 Images per Chapter** (Minimum).
+    *   *Goal:* Break up text walls and visualize abstract concepts frequently.
+
+## 2. Text & Language Rules
+*   **Visual Text:** **Thai Script (TH)** (Required for all labels).
+    *   *Constraint:* Ensure the Thai font is legible and clean. Use formal but accessible language.
+    *   *English Terms:* Use English only for specific technical terms (e.g., "Imposter Syndrome") that are better left untranslated, or use dual language if necessary.
+*   **Captions:** Continue to use **Thai Captions** in the Markdown file for accessibility and context.
+
+## 3. Prompt Structure & Examples
+*Use these examples as a template for tone and detail.*
+
+### Example 1: Abstract Concept (The Crystallization)
+*   **Prompt:** Infographic diagram. Top: Cloud of tangled lines labeled 'ความวุ่นวาย' (Chaos). Middle: Funnel mechanism labeled 'ตัวกรอง' (Filter). Bottom: Organized blocks labeled 'ความชัดเจน' (Clarity). Cream background. Sage and Terracotta accents.
+*   **Text:** Thai Script Labels.
+
+### Example 2: Comparison (Author vs Director)
+*   **Prompt:** Split screen infographic. Left: 'ผู้ประพันธ์' (The Author), icon of person + clock. Right: 'ผู้กำกับ' (The Director), icon of person + network.
+*   **Text:** Thai Script Labels.
+
+## 4. File Management
+*   **Location:** `assets/images/chapter_XX/` (e.g., `chapter_01`, `chapter_02`).
+*   **Naming Convention:** `snake_case_concept_name.png` (e.g., `three_leverages.png`).
+*   **Production Queue:** All pending execution prompts are stored in `resources/pending_image_prompts.md`. Check this file for the active to-do list.
+EOF
+
+# 08_self_annealing.md
+cat <<'EOF' > directives/08_self_annealing.md
+# DIRECTIVE: Self-Annealing System (ระบบการเรียนรู้และปรับปรุงตัวเอง)
+**Filename:** `directives/08_self_annealing.md`
+
+## 1. Core Concept (แนวคิดหลัก)
+**"The System that Improves Itself"**
+เป้าหมายสูงสุดของการเขียนหนังสือด้วย AI Ghost Writing Machine คือการสร้างระบบที่ไม่เพียงแค่ "ผลิต" งานเขียน แต่ต้องสามารถ "เรียนรู้" จากข้อผิดพลาด (Bugs/Errors) และ "ปรับปรุง" (Optimize) กระบวนการทำงานของตัวเองให้ดีขึ้นเรื่อยๆ ในทุกๆ รอบการทำงาน (Iteration)
+
+นี่คือการนำหลักการ **Self-Annealing** (การหลอมรวมและจัดเรียงตัวใหม่เพื่อลดความไม่สมบูรณ์) มาใช้กับการทำงานร่วมกันระหว่าง Human Director และ AI Agent
+
+## 2. Trigger Strategy (เมื่อไหร่ต้องใช้ Directive นี้?)
+ให้เริ่มกระบวนการ Self-Annealing ทันทีเมื่อเกิดเหตุการณ์ต่อไปนี้:
+1.  **Manual Rework Spike:** เมื่อ Human Director ต้องเข้ามาแก้เนื้อหาใน Draft เดิมซ้ำๆ หรือแก้เป็นจำนวนมาก (แสดงว่า Directive เดิมไม่ละเอียดพอ)
+2.  **Recurring Criticism:** เมื่อได้รับ Feedback เดิมซ้ำๆ (เช่น "โทนยังทางการเกินไป", "ยังขาดการยกตัวอย่าง") เกิน 2 ครั้ง
+3.  **Process Failure:** เมื่อทำตาม SOP เดิมแล้วได้ผลลัพธ์ที่ไม่ตรงตามเป้าหมาย หรือติดขัดจนไปต่อไม่ได้
+
+## 3. The Self-Annealing Workflow (ขั้นตอนการปฏิบัติ)
+ให้ AI ปฏิบัติตาม 3 ขั้นตอนนี้อย่างเคร่งครัดเมื่อได้รับคำสั่ง "Task: Self-Anneal":
+
+### Step 1: Analyze (วิเคราะห์สาเหตุ)
+วิเคราะห์หาสาเหตุที่แท้จริง (Root Cause Analysis) ว่าทำไม SOP/Directives เดิมถึงทำให้เกิดปัญหา:
+*   **Gap Identification:** กฎข้อไหนใน `directives/` ที่ "หายไป" (Missing)?
+*   **Ambiguity:** กฎข้อไหนที่ "คลุมเครือ" จนทำให้ AI ตีความผิด?
+*   **Conflict:** มีกฎข้อไหนที่ "ขัดแย้ง" กันเองหรือไม่?
+
+### Step 2: Propose Directive Update (เสนอการแก้ไข SOP)
+ห้ามแก้แค่ที่ปลายเหตุ (แก้แค่ Text ในบทนั้น) แต่ต้องเสนอการแก้ที่ต้นเหตุ (Directive) เพื่อป้องกันไม่ให้เกิดปัญหาเดิมในบทถัดไป:
+*   ระบุชื่อไฟล์ Directive ที่ต้องการแก้ไข (เช่น `01_write_chapter.md`, `02_refine_voice.md`)
+*   ระบุเนื้อหาที่ต้องการเพิ่ม (Add), ลบ (Exclude), หรือปรับเปลี่ยน (Modify)
+*   **Example:** "เพิ่มกฎใน `02_refine_voice.md` ว่า *'ต้องมี Metaphor เปรียบเทียบกับ Software Engineering อย่างน้อย 1 ครั้งในทุก Section'* เพื่อแก้ปัญหาเนื้อหาดูแห้งแล้งเกินไป"
+
+### Step 3: Execute Optimization (ดำเนินการปรับปรุงระบบ)
+เมื่อ Human Director อนุมัติแผนการแก้ไข:
+1.  ทำการแก้ไขไฟล์ Directive นั้นจริงๆ (`write_to_file` / `replace_file_content`)
+2.  บันทึกสิ่งที่เรียนรู้ใหม่ลงใน `task.md` หรือ Log เพื่อเป็นหลักฐานว่าระบบได้ "ฉลาดขึ้น" แล้ว (Version Up)
+
+## 4. Maintenance (การดูแลรักษาระบบ)
+*   อย่ากลัวที่จะลบกฎเก่าที่ล้าสมัย (Deprecation)
+*   ทำให้ Directive สั้น กระชับ และ High-impact เสมอ (Lean Principle)
+EOF
+
 # ==========================================
 # 5. GENERATE EXECUTION TOOLS
 # ==========================================
@@ -647,7 +736,9 @@ ${PROJECT_NAME}/
 │   ├── 03_master_plan.md
 │   ├── 04_research_protocol.md
 │   ├── 05_autonomous_research.md
-│   └── 06_editor_critic.md
+│   ├── 06_editor_critic.md
+│   ├── 07_illustration_style.md
+│   └── 08_self_annealing.md
 ├── drafts/                  # AI-generated drafts
 ├── execution/               # Python tools and scripts
 │   └── research_tool.py
