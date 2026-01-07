@@ -38,4 +38,8 @@
    Prompt: ใช้ @startprompt.md @README.md @GEMINI.md ในการทำความเข้าใจโปรเจคการเขียนหนังสือเล่มนี้
    โดยให้ศึกษา outline ของหนังสือจาก @resources/outline.md และโครงร่างจาก @TopBun/Chapter1.md เพื่อเริ่มเขียนบทที่ 1 สามารถใช้ @directives/04_research_protocol.md
    สำหรับการค้นคว้าข้อมูลเพิ่มเติมประกอบการเขียน
- - เมื่อ AI เขียนแล้ว ไฟล์ที่เขียนจะอยู่ในโฟล์เดอร์ drafts 
+ - เมื่อ AI เขียนแล้ว ไฟล์ที่เขียนจะอยู่ในโฟล์เดอร์ drafts
+
+---
+## Facebook Group
+สามารถเข้าร่วมกลุ่มใน Facebook Group เพื่อแลกเปลี่ยนเรียนรู้ หรือพูดคุยเพิ่มเติมได้ที่ [The Hidden Narrator](https://www.facebook.com/share/g/1AE1AmF1kg/)
